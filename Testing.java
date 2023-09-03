@@ -6,25 +6,15 @@ public class Testing {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("What type of list do you want to input? (integer/string): ");
-        String type = scanner.next();
+        System.out.println("Enter a string: ");
+        String input = scanner.nextLine();
 
-        scanner.nextLine();  // Consume the leftover newline character
+        // Convert the input string to a list of characters
+        List<Character> charList = input.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
 
-        System.out.println("Enter the list elements separated by spaces: ");
-        String[] elements = scanner.nextLine().split(" ");
-
-        if ("integer".equalsIgnoreCase(type)) {
-            List<Integer> integerList = Arrays.stream(elements)
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            System.out.println("Reversed and repeated Integers: " + processList(integerList));
-        } else if ("string".equalsIgnoreCase(type)) {
-            List<String> stringList = Arrays.asList(elements);
-            System.out.println("Reversed and repeated Strings: " + processList(stringList));
-        } else {
-            System.out.println("Invalid type!");
-        }
+        System.out.println("Reversed and repeated Characters: " + processList(charList));
     }
 
     public static <T extends Comparable<T>> Map<String, List<T>> processList(List<T> list) {
