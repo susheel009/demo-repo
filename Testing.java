@@ -9,31 +9,34 @@ public class Testing {
         System.out.println("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Convert the input string to a list of characters
+        // Convert the input string to a list of characters for processing
         List<Character> charList = input.chars()
                 .mapToObj(c -> (char) c)
                 .collect(Collectors.toList());
 
-        System.out.println("Reversed and repeated Characters: " + processList(charList));
+        System.out.println("Processed Characters: " + processList(charList));
     }
 
-    public static <T extends Comparable<T>> Map<String, List<T>> processList(List<T> list) {
-        Map<String, List<T>> result = new HashMap<>();
+    public static <T extends Comparable<T>> Map<String, Object> processList(List<T> list) {
+        Map<String, Object> result = new HashMap<>();
 
-        // Reversing the list
-        List<T> reversed = list.stream()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toList());
+        // Reverse the list, including spaces
+        List<T> reversed = new ArrayList<>(list);
+        Collections.reverse(reversed);
+        String reversedStr = reversed.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining());
+        result.put("Reversed", reversedStr);
 
-        // Finding repeated values
-        List<T> repeated = list.stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .entrySet().stream()
+        // Finding repeated values and their counts, ignoring spaces
+        Map<T, Long> counts = list.stream()
+                .filter(c -> !c.equals(' '))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        Map<T, Long> repeated = counts.entrySet().stream()
                 .filter(entry -> entry.getValue() > 1)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        result.put("Reversed", reversed);
         result.put("Repeated", repeated);
 
         return result;
