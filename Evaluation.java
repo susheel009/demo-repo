@@ -18,7 +18,7 @@ public class Evaluation {
                 .map(Object::toString)
                 .collect(Collectors.joining()));
 
-        List<Integer> list = Arrays.asList(1, 2, 2, 3, 3, 4,4 , 5, 3, 3);
+        List<Integer> list = Arrays.asList(1, 2, 2, 3, 3, 4, 4, 5, 3, 3);
 
 
         List<String> stringList = Arrays.asList("Hello", "Hello", "World");
